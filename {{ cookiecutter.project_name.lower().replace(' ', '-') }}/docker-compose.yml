@@ -1,0 +1,7 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./{{ cookiecutter.package_name }}:/app/{{ cookiecutter.package_name }}

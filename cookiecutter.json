@@ -1,15 +1,11 @@
 {
-    "project_name": "Name of the project",
-    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
-    "project_short_description": "A short description of the project",
-    "machine_learn_model_path": "./ml/model/",
-    "machine_learn_model_name": "model.pkl",
-    "input_example_path": "./ml/model/examples/example.json",
-    "full_name": "Your name",
-    "email": "you <you@example.com>",
-    "release_date": "{% now 'local' %}",
-    "version": "0.1.0",
-    "_copy_without_render": [
-        "*ci.yaml"
-    ]
+  "project_name": "python-project",
+  "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('-', '_') }}",
+  "ci_git_platform": ["github", "gitlab", "no_ci"],
+  "git_username": "{% if cookiecutter.ci_git_platform == 'no_ci' %}{% else %}username{% endif %}",
+  "git_repo_url": "{% if cookiecutter.ci_git_platform == 'no_ci' %}repo_url{% else %}https://{{ cookiecutter.ci_git_platform }}.com/{{ cookiecutter.git_username.lower() }}/{{ cookiecutter.project_name.lower().replace(' ', '-') }}{% endif %}",
+  "python_version": "3.9",
+  "format_line_length": 88,
+  "install_pydantic": true,
+  "db_option": ["sqlalchemy_orm", "sqlalchemy_queries", "sqlmodel", "beanie", "none"]
 }

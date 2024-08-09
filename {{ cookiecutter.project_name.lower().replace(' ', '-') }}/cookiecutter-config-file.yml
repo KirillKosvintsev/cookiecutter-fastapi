@@ -1,0 +1,13 @@
+# This file contains values from Cookiecutter
+
+default_context:
+  project_name: "{{ cookiecutter.project_name }}"
+  package_name: "{{ cookiecutter.package_name }}"
+  git_platform: "{{ cookiecutter.ci_git_platform }}"
+  username: "{{ cookiecutter.git_username }}"
+  git_repo_url: "{{ cookiecutter.git_repo_url }}"
+  python_version: "{{ cookiecutter.python_version }}"
+  line_length: "{{ cookiecutter.format_line_length }}"
+
+
+# TODO: добавить дополнительные настройки
