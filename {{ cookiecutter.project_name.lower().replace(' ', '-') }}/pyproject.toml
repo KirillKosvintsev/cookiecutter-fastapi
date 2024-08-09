@@ -8,23 +8,71 @@ name = "{{ cookiecutter.project_name.lower().replace(' ', '-') }}"
 
 [tool.poetry.dependencies]  # https://python-poetry.org/docs/dependency-specification/
 python = "^{{ cookiecutter.python_version }}"
-{%- if cookiecutter.install_pydantic %}
-pydantic = "^2.6.4"
-{%- endif %}
+loguru = "^0.7.2"
+{% if cookiecutter.project_type == "fastapi_app" %}
+fastapi = {version = "^0.110.0", python = ">=3.8"}
+uvicorn = {extras = ["standard"], version = "^0.27.1"}
+{% if cookiecutter.python_version == "3.8" %}
+pydantic = {extras = ["email"], version = "^1.10.14"}
+pydantic-settings = "^1.2.0"
+{% else %}
+pydantic = {extras = ["email"], version = "^2.6.4"}
+pydantic-settings = "^2.2.1"
+{% endif %}
+{% endif %}
 
-[tool.poetry.group.dev.dependencies]  # https://python-poetry.org/docs/master/managing-dependencies/
+{% if cookiecutter.db_option == "sqlalchemy_orm" %}
+{% if cookiecutter.python_version == "3.8" %}
+sqlalchemy = {version = "^1.4.49", python = ">=3.7,<4.0"}
+{% else %}
+sqlalchemy = {version = "^2.0.28", python = ">=3.7"}
+{% endif %}
+alembic = "^1.13.1"
+{% endif %}
+
+{% if cookiecutter.db_option == "sqlalchemy_queries" %}
+{% if cookiecutter.python_version == "3.8" %}
+sqlalchemy = {version = "^1.4.49", python = ">=3.7,<4.0"}
+{% else %}
+sqlalchemy = {version = "^2.0.28", python = ">=3.7"}
+{% endif %}
+{% endif %}
+
+{% if cookiecutter.db_option == "sqlmodel" %}
+{% if cookiecutter.python_version == "3.8" %}
+sqlmodel = "^0.0.8"
+{% else %}
+sqlmodel = "^0.0.16"
+{% endif %}
+{% endif %}
+
+{% if cookiecutter.db_option == "beanie" %}
+{% if cookiecutter.python_version == "3.8" %}
+beanie = "^1.11.9"
+{% else %}
+beanie = "^1.25.0"
+{% endif %}
+{% endif %}
+
+[tool.poetry.group.dev.dependencies] # https://python-poetry.org/docs/master/managing-dependencies/
+{% if cookiecutter.python_version == "3.8" %}
+mypy = "^0.991"
+pytest = "^7.4.4"
+pytest-cov = "^4.1.0"
+{% else %}
 mypy = "^1.11.1"
-pre-commit = "^3.8.0"
 pytest = "^8.3.2"
 pytest-cov = "^5.0.0"
+{% endif %}
+pre-commit = "^3.8.0"
 coverage = "^7.6.0"
 typeguard = "^4.3.0"
 ruff = "^0.5.5"
 safety = "^3.2.4"
 deptry = "^0.18.0"
-{%- if cookiecutter.ci_git_platform == 'gitlab' %}
+{% if cookiecutter.ci_git_platform == 'gitlab' %}
 mypy-gitlab-code-quality = "^1.1.0"
-{%- endif %}
+{% endif %}
 
 [tool.mypy]  # https://mypy.readthedocs.io/en/latest/config_file.html#using-a-pyproject-toml-file
 junit_xml = "reports/mypy.xml"
@@ -35,10 +83,10 @@ show_error_codes = true
 show_error_context = true
 show_traceback = true
 color_output = true
-{%- if cookiecutter.install_pydantic %}
+{% if cookiecutter.project_type == "fastapi_app" %}
 plugins = ["pydantic.mypy"]
 {% endif %}
-strict = true  # https://mypy.readthedocs.io/en/stable/existing_code.html#introduce-stricter-options
+strict = true
 ignore_missing_imports = true
 disallow_untyped_decorators = false
 
@@ -47,13 +95,15 @@ module = "tests.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 disallow_untyped_calls = false
-{% if cookiecutter.install_pydantic %}
+
+{% if cookiecutter.project_type == "fastapi_app" %}
 [tool.pydantic-mypy]  # https://pydantic-docs.helpmanual.io/mypy_plugin/#configuring-the-plugin
 init_forbid_extra = true
 init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 {% endif %}
+
 [tool.pytest.ini_options]
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
 # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
@@ -99,7 +149,7 @@ overgeneral-exceptions = ["builtins.BaseException", "builtins.Exception"]
 
 [tool.ruff]  # https://github.com/charliermarsh/ruff
 line-length = 100
-target-version = "py312"
+target-version = "py{{ cookiecutter.python_version.replace('.', '') }}"
 
 [tool.ruff.lint]
 select = ["ALL"]

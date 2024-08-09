@@ -81,7 +81,11 @@ RUN --mount=type=cache,target=/root/.cache \
 # will become mountpoint of our code
 WORKDIR /app
 
-CMD ["python", "-m", "{{ cookiecutter.package_name }}.example"]
+{% if cookiecutter.project_type == "fastapi_app" %}
+CMD ["python", "-m", "app.main"]
+{% else %}
+CMD ["python", "-m", "app.run"]
+{% endif %}
 
 
 ################################
@@ -90,6 +94,10 @@ CMD ["python", "-m", "{{ cookiecutter.package_name }}.example"]
 ################################
 FROM python-base AS production
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-COPY ./{{ cookiecutter.package_name }} /app/{{ cookiecutter.package_name }}
+COPY ./app /app/app
 WORKDIR /app
-CMD ["python", "-m", "{{ cookiecutter.package_name }}.example"]
+{% if cookiecutter.project_type == "fastapi_app" %}
+CMD ["python", "-m", "app.main"]
+{% else %}
+CMD ["python", "-m", "app.run"]
+{% endif %}

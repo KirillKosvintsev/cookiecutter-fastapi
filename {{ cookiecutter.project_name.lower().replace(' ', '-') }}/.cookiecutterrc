@@ -7,7 +7,6 @@ default_context:
   username: "{{ cookiecutter.git_username }}"
   git_repo_url: "{{ cookiecutter.git_repo_url }}"
   python_version: "{{ cookiecutter.python_version }}"
-  line_length: "{{ cookiecutter.format_line_length }}"
-
-
-# TODO: добавить дополнительные настройки
+  project_type: "{{ cookiecutter.project_type }}"
+  db_option: "{{ cookiecutter.db_option }}"
+  include_ml_exp_folder: "{{ cookiecutter.include_ml_exp_folder }}"

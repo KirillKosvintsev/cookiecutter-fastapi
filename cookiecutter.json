@@ -1,11 +1,11 @@
 {
   "project_name": "python-project",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('-', '_') }}",
-  "ci_git_platform": ["github", "gitlab", "no_ci"],
-  "git_username": "{% if cookiecutter.ci_git_platform == 'no_ci' %}{% else %}username{% endif %}",
-  "git_repo_url": "{% if cookiecutter.ci_git_platform == 'no_ci' %}repo_url{% else %}https://{{ cookiecutter.ci_git_platform }}.com/{{ cookiecutter.git_username.lower() }}/{{ cookiecutter.project_name.lower().replace(' ', '-') }}{% endif %}",
-  "python_version": "3.9",
-  "format_line_length": 88,
-  "install_pydantic": true,
-  "db_option": ["sqlalchemy_orm", "sqlalchemy_queries", "sqlmodel", "beanie", "none"]
+  "python_version": ["3.8", "3.9", "3.10", "3.11", "3.12"],
+  "project_type": ["fastapi_app", "empty"],
+  "db_option": ["none", "sqlalchemy_orm", "sqlalchemy_queries", "sqlmodel", "beanie"],
+  "include_ml_exp_folder": "n",
+  "ci_git_platform": ["none", "github", "gitlab"],
+  "git_username": "{% if cookiecutter.ci_git_platform == 'none' %}{% else %}username{% endif %}",
+  "git_repo_url": "{% if cookiecutter.ci_git_platform == 'none' %}repo_url{% else %}https://{{ cookiecutter.ci_git_platform }}.com/{{ cookiecutter.git_username.lower() }}/{{ cookiecutter.project_name.lower().replace(' ', '-') }}{% endif %}"
 }

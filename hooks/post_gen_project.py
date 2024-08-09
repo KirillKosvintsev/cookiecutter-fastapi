@@ -10,6 +10,9 @@ PROJECT_NAME = "{{ cookiecutter.project_name }}"
 GIT_REPO_URL = "{{ cookiecutter.git_repo_url }}"
 GIT_PLATFORM = "{{ cookiecutter.ci_git_platform }}"
 DB_OPTION = "{{ cookiecutter.db_option }}"
+INCLUDE_ML_EXP_FOLDER = "{{ cookiecutter.include_ml_exp_folder }}" == "y"
+PROJECT_TYPE = "{{ cookiecutter.project_type }}"
+
 
 def print_further_instructions(project_name: str, git_repo_url: str) -> None:
     """Show user what to do next after project creation."""
@@ -67,11 +70,36 @@ def remove_unrelated_ci_configuration(project_directory: Path, git_platform: str
         remove_file(project_directory / ".gitlab-ci.yml")
     elif git_platform == "gitlab":
         remove_directory(project_directory / ".github")
-    elif git_platform == "no_ci":
+    elif git_platform == "none":
         remove_file(project_directory / ".gitlab-ci.yml")
         remove_directory(project_directory / ".github")
     else:
         raise ValueError(f"Unsupported git platform: {git_platform}")
+
+
+def process_project_type(project_directory: Path, project_type: str) -> None:
+    """Process project files based on the chosen project type."""
+    app_dir = project_directory / "app"
+    run_py = project_directory / "run.py"
+
+    if project_type == "empty":
+        # Remove all contents of app directory
+        remove_directory(app_dir)
+        # Recreate empty app directory
+        app_dir.mkdir(exist_ok=True)
+        # Move run.py into app directory
+        if run_py.exists():
+            shutil.move(str(run_py), str(app_dir / "run.py"))
+        else:
+            raise FileNotFoundError("run.py not found in project root")
+        # Create empty __init__.py in app directory
+        (app_dir / "__init__.py").touch()
+    elif project_type == "fastapi_app":
+        # Remove run.py for FastAPI projects
+        remove_file(run_py)
+    else:
+        raise ValueError(f"Unsupported project type: {project_type}")
+    # For "fastapi_app", we keep the existing structure
 
 
 def process_db_files(project_directory: Path, db_option: str) -> None:
@@ -168,11 +196,21 @@ def remove_empty_directories(directories: List[Path]) -> None:
             dir_path.rmdir()
 
 
+def process_ml_folder(project_directory: Path, include_ml_exp_folder: bool) -> None:
+    """Process ML folder based on the include_ml_exp_folder parameter."""
+    ml_dir = project_directory / "ml"
+    if not include_ml_exp_folder and ml_dir.exists():
+        remove_directory(ml_dir)
+
+
 def main() -> None:
     """Main function to orchestrate the post-generation process."""
     print_further_instructions(project_name=PROJECT_NAME, git_repo_url=GIT_REPO_URL)
+    process_project_type(PROJECT_DIRECTORY, PROJECT_TYPE)
     remove_unrelated_ci_configuration(PROJECT_DIRECTORY, GIT_PLATFORM)
-    process_db_files(PROJECT_DIRECTORY, DB_OPTION)
+    if PROJECT_TYPE == "fastapi_app":
+        process_db_files(PROJECT_DIRECTORY, DB_OPTION)
+    process_ml_folder(PROJECT_DIRECTORY, INCLUDE_ML_EXP_FOLDER)
 
 
 if __name__ == "__main__":
