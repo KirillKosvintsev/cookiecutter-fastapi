@@ -1,6 +1,8 @@
-from sqlmodel import Session, select
-from models.sqlmodel.example_model import User
 from typing import List, Optional
+
+from sqlmodel import Session, select
+
+from app.models.example_model import User
 
 
 class UserRepository:

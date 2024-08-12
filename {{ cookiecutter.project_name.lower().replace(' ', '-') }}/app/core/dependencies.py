@@ -2,15 +2,15 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from core import security
-from db.sqlalchemy.session import get_db
-from models.sqlalchemy.example_model import User
-from core.events import get_ml_model
+from app.core import security
+from app.db.session import get_db
+from app.models.sqlalchemy.example_model import User
+from app.api.events import get_ml_model
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-async def get_model():
+def get_model():
     model = get_ml_model()
     if model is None:
         raise HTTPException(status_code=503, detail="ML model is not loaded")

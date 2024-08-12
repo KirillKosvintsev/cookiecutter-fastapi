@@ -50,6 +50,7 @@ class SecuritySettings(BaseSettings):
     secret_key: str = Field(..., env="SECRET_KEY")
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
+    allowed_hosts: list = Field(default=["*"], env="ALLOWED_HOSTS")
 
 
 class ModelSettings(BaseSettings):

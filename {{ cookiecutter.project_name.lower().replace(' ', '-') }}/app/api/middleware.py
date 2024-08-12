@@ -6,20 +6,7 @@ from starlette.middleware.base import BaseHTTPMiddleware, \
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
-from config.config import settings
-
-
-def setup_middleware(app: FastAPI):
-    # CORS middleware
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["http://localhost:3000"],  # Замените на ваши разрешенные источники
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-    if settings.profile_endpoints:
-        app.add_middleware(EndpointExecutionTimeLoggingMiddleware)
+from app.config.config import settings
 
 
 class EndpointExecutionTimeLoggingMiddleware(BaseHTTPMiddleware):
@@ -33,3 +20,16 @@ class EndpointExecutionTimeLoggingMiddleware(BaseHTTPMiddleware):
         logger.debug(f"Endpoint executed in {process_time} seconds")
 
         return response
+
+
+def setup_middleware(app: FastAPI):
+    # CORS middleware
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.security.allowed_hosts,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    if settings.profile_endpoints:
+        app.add_middleware(EndpointExecutionTimeLoggingMiddleware)

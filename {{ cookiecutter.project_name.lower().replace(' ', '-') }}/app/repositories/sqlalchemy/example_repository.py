@@ -1,8 +1,10 @@
+from typing import List, Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import update, delete
-from models.sqlalchemy.example_model import User
-from typing import List, Optional
+
+from app.models.example_model import User
 
 
 class UserRepository:

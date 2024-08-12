@@ -1,6 +1,6 @@
 from typing import List, Optional
 from beanie import PydanticObjectId
-from models.beanie.example_model import User
+from app.models.example_model import User
 
 
 class UserRepository:

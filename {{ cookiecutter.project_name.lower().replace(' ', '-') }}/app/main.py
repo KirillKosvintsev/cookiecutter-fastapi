@@ -1,17 +1,22 @@
 from fastapi import FastAPI
 
-from api.v1.api import router as api_router
-from core.events import create_start_app_handler
-from config.config import API_PREFIX, DEBUG, PROJECT_NAME, VERSION
+from app.api.v1.api_router import api_router
+from app.api.system import system_router
+from app.api.events import lifespan
+from app.api.middleware import setup_middleware
+from app.config.config import settings
+from app.core.logger import setup_logging
 
 
 def get_application() -> FastAPI:
-    application = FastAPI(title=PROJECT_NAME, debug=DEBUG, version=VERSION)
-    application.include_router(api_router, prefix=API_PREFIX)
-    pre_load = False
-    if pre_load:
-        application.add_event_handler("startup", create_start_app_handler(application))
+    application = FastAPI(title=settings.api.title, debug=settings.debug,
+                          version=settings.api.version, lifespan=lifespan)
+    setup_middleware(application)
+    application.include_router(system_router)
+    application.include_router(api_router, prefix=settings.api.prefix)
     return application
 
+
+setup_logging()
 
 app = get_application()

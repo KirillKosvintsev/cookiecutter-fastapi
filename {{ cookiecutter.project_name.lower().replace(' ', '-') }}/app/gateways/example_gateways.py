@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Type
 import aiohttp
 import requests
 from pydantic import BaseModel
@@ -123,5 +123,4 @@ class CachedGateway(AsyncGateway):
 
         if use_cache and method.lower() == "get":
             await self.cache.set(cache_key, response, expire=cache_ttl)
-
         return response

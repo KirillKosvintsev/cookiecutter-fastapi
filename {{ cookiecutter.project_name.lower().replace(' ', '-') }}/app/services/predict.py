@@ -2,11 +2,11 @@ import os
 
 from loguru import logger
 
-from core.errors import PredictException, ModelLoadException
-from config.config import settings
+from app.core.errors import PredictException, ModelLoadException
+from app.config.config import settings
 
 
-class MachineLearningModelHandlerScore(object):
+class MachineLearningModelInference(object):
     model = None
 
     @classmethod
@@ -24,7 +24,6 @@ class MachineLearningModelHandlerScore(object):
 
     @staticmethod
     def load(load_wrapper):
-        model = None
         model_path = settings.model.model_path
         model_name = settings.model.model_name
         if settings.model.model_path.endswith("/"):

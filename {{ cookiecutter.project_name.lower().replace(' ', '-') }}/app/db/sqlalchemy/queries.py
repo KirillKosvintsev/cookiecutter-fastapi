@@ -1,6 +1,6 @@
 from loguru import logger
 
-from db.sqlalchemy.session import AsyncSessionLocal
+from app.db.session import AsyncSessionLocal
 
 
 # Функция для выполнения SQL-запроса
