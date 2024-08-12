@@ -160,23 +160,47 @@ make lint
 <summary>8. Docker</summary>
 <p>
 
+Build image:
+
 ```bash
 make docker-build
 ```
 
-which is equivalent to:
+Which is equivalent to:
 
 ```bash
 make docker-build VERSION=latest
 ```
 
-Remove docker image with
+Remove docker image with:
 
 ```bash
 make docker-remove
 ```
 
-More information [about docker]({{ cookiecutter.git_repo_url }}/tree/master/docker).
+Run docker container with:
+
+```bash
+make docker-up
+```
+
+Stop docker container with:
+
+```bash
+make docker-down
+```
+
+Run docker container in detach (-d) mode with:
+
+```bash
+make docker-debug
+```
+
+Also, you can run **poetry directly**:
+
+```bash
+make local-up
+```
 
 </p>
 </details>
@@ -219,4 +243,4 @@ make cleanup
 
 ## Credits
 
-This project was generated with [`python-package-template`](https://github.com/kosvintsevke/cookiecutter-fastapi)
+This project was generated with [`cookiecutter-fastapi`](https://github.com/kosvintsevke/cookiecutter-fastapi)

@@ -7,7 +7,7 @@ IMAGE := {{ cookiecutter.project_name.lower().replace(' ', '-') }}
 VERSION := latest
 
 #* Directories with source code
-CODE = {{ cookiecutter.package_name }} tests
+CODE = app tests
 TESTS = tests
 
 #* Poetry
@@ -111,9 +111,21 @@ docker-remove:
 	@echo Removing docker $(IMAGE):$(VERSION) ...
 	docker rmi -f $(IMAGE):$(VERSION)
 
+.PHONY: docker-debug
+docker-debug:
+	docker compose up --build --force-recreate --remove-orphans
+
 .PHONY: docker-up
 docker-up:
-	docker compose up
+	docker compose up --build -d --force-recreate
+
+.PHONY: docker-down
+docker-down:
+	docker compose down
+
+.PHONY: local-up
+local-up:
+	poetry run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
 
 #* Cleaning
 .PHONY: pycache-remove

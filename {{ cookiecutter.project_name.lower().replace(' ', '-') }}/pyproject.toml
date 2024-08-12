@@ -20,7 +20,6 @@ pydantic = {extras = ["email"], version = "^2.6.4"}
 pydantic-settings = "^2.2.1"
 {% endif %}
 {% endif %}
-
 {% if cookiecutter.db_option == "sqlalchemy_orm" %}
 {% if cookiecutter.python_version == "3.8" %}
 sqlalchemy = {version = "^1.4.49", python = ">=3.7,<4.0"}
