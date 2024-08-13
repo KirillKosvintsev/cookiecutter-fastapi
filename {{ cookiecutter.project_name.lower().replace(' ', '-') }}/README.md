@@ -241,6 +241,14 @@ make cleanup
 </p>
 </details>
 
+## Access Swagger Documentation
+
+> <http://localhost:8080/docs>
+
+## Access Redocs Documentation
+
+> <http://localhost:8080/redoc>
+
 ## Credits
 
 This project was generated with [`cookiecutter-fastapi`](https://github.com/kosvintsevke/cookiecutter-fastapi)
