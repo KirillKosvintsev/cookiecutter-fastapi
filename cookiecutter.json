@@ -1,7 +1,7 @@
 {
   "project_name": "python-project",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('-', '_') }}",
-  "python_version": ["3.8", "3.9", "3.10", "3.11", "3.12"],
+  "python_version": ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
   "project_type": ["fastapi_app", "empty"],
   "db_option": ["none", "sqlalchemy_orm", "sqlalchemy_queries", "sqlmodel", "beanie"],
   "include_ml_exp_folder": "n",
